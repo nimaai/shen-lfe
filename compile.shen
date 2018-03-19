@@ -1,10 +1,10 @@
-(set *klambda-directory* "klambda/")
-(set *klambda-lfe-directory* "klambda-lfe/")
+(set *kl-directory* "kl-sources/")
+(set *lfe-directory* "lfe-sources/")
 
 (define compile-kl ->
   (do
-    (output "klambda directory: ~S~%" (value *klambda-directory*))
-    (output "klambda-lfe directory ~S~%" (value *klambda-lfe-directory*))
+    (output "klambda directory: ~S~%" (value *kl-directory*))
+    (output "lfe directory ~S~%" (value *lfe-directory*))
     (output "~%")
     (map
       (function compile-kl-file)
@@ -33,21 +33,22 @@
 (define compile-kl-file
   File ->
     (let _ (output "compiling ~A~%" File)
-         KlFile (make-string "~A~A.kl" (value *klambda-directory*) File)
-         LfeFile (make-string "~A~A.lfe" (value *klambda-lfe-directory*) File)
+         KlFile (make-string "~A~A.kl" (value *kl-directory*) File)
+         LfeFile (make-string "~A~A.lfe" (value *lfe-directory*) File)
          KlCode (read-file KlFile)
-         \* KlCode (map (function make-kl-code) ShenCode) *\
-         KlString (list->string [[defmodule (intern File)] | KlCode])
-         Write (write-to-file LfeFile KlString)
+         LfeCode (map (function make-lfe-code) KlCode)
+         LfeString (list->string [[defmodule (intern File)] | (skip-copyright LfeCode)])
+         Write (write-to-file LfeFile LfeString)
       KlFile))
+
+(define skip-copyright
+  [Copy | Rest] -> Rest where (string? Copy)
+  X -> X)
 
 (define list->string
   [] -> ""
   [X | Y] -> (@s (make-string "~R~%~%" X) (list->string Y)))
 
-\*
-(define make-kl-code
-  [define F | Rules] -> (shen.elim-def [define F | Rules])
-  [defcc F | Rules] -> (shen.elim-def [defcc F | Rules])
+(define make-lfe-code
+  [defun | R] -> [kl-defun | R]
   Code -> Code)
-*\
