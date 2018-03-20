@@ -1,6 +1,6 @@
 (defmodule klambda
   (export (cons? 1) (simple-error 1) (set 2) (value 1))
-  (natives if and or cons hd tl))
+  (natives if and or cond cons hd tl))
 
 (defun natives ()
   (element 2 (lists:keyfind 'natives 1 (module_info 'attributes))))

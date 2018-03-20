@@ -17,4 +17,5 @@
 (defun start ()
   (init-vars-table)
   (init-functions-table)
-  (set-vars))
+  (set-vars)
+  (core:load))
