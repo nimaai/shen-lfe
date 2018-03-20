@@ -73,7 +73,7 @@
   [defun N P B] -> [(intern "macros:defun") N P (make-lfe-code B)]
   [lambda P B] -> [(intern "macros:lambda") P (make-lfe-code B)]
   [freeze P B] -> [(intern "macros:freeze") P (make-lfe-code B)]
-  [let X Y B] -> [(intern "macros:let") X Y (make-lfe-code B)]
+  [let X Y B] -> [(intern "macros:let") X (make-lfe-code Y) (make-lfe-code B)]
   [F | R] -> [(intern "macros:funcall") F | (map-make-lfe-code R)]
   Code -> Code)
 
