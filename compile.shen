@@ -45,11 +45,14 @@
          QFreeKlCode (map-quote-free-symbols [] KlCode)
          \* LfeCode (map-make-lfe-code [] QFreeKlCode) *\
          LfeCode QFreeKlCode
-         LfeString (list->string [(module File) | (skip-copyright LfeCode)])
+         LfeString (list->string [(module File) | [(wrap-in-start (skip-copyright LfeCode))]])
          Write (write-to-file LfeFile LfeString)
       KlFile))
 
 (define module File -> [defmodule (intern File)])
+
+(define wrap-in-start
+  Code -> [defun start [] [progn | Code]])
 
 (define skip-copyright
   [Copy | Rest] -> Rest where (string? Copy)
