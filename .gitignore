@@ -1,4 +1,4 @@
 *.beam
 *.dump
-lfe-sources/
+lfe-sources/toplevel*
 _build/
