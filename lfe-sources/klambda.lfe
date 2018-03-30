@@ -5,9 +5,6 @@
 (defun natives ()
   (element 2 (lists:keyfind 'natives 1 (module_info 'attributes))))
 
-(defun fun-value (name)
-  (element 2 (hd (ets:lookup 'shen_functions name))))
-
 (defun set (x y)
   (ets:insert 'shen_vars (tuple x y)))
 

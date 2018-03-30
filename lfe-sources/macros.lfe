@@ -1,12 +1,13 @@
-(defmodule macros (export all))
+(defmodule macros
+  (export-macro defun funcall freeze let))
 
 (defmacro defun (name params body)
  `(ets:insert 'shen_functions
               (tuple ',name (lambda ,params ,body))))
 
 (defmacro funcall
-  ([name] `(funcall (fun-value ',name)))
-  ((cons name args) `(funcall (fun-value ',name) ,@args)))
+  ((list name) `(funcall (helpers:get-fun ',name)))
+  ((cons name args) `(funcall (helpers:get-fun ',name) ,@args)))
 
 (defmacro freeze (body)
   `(lambda () ,body))
