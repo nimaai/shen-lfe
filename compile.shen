@@ -14,9 +14,8 @@
     (output "~%")
     (map
       (function compile-kl-file)
-      [
+      ["core"
        \*
-       "core"
        "declarations"
        "load"
        "macros"
@@ -26,9 +25,7 @@
        "sys"
        "dict"
        "t-star"
-       *\ 
        "toplevel"
-       \*
        "track"
        "types"
        "writer"
