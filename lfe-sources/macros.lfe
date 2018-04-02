@@ -1,5 +1,5 @@
 (defmodule macros
-  (export-macro defun funcall freeze let))
+  (export-macro defun funcall freeze let trap-error))
 
 (defmacro defun (name params body)
  `(ets:insert 'shen_functions
@@ -14,3 +14,6 @@
 
 (defmacro let (x y body)
   `(let ((x y)) ,body))
+
+(defmacro trap-error (x f)
+  `(try ,x (catch (e (funcall ,f e)))))

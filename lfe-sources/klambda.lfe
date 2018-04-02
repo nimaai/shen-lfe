@@ -1,5 +1,5 @@
 (defmodule klambda
-  (export (cons? 1) (simple-error 1) (set 2) (value 1))
+  (export (cons? 1) (error-to-string 1) (simple-error 1) (set 2) (value 1))
   (natives if and or cond cons hd tl))
 
 (defun natives ()
@@ -12,9 +12,13 @@
   (element 2 (hd (ets:lookup 'shen_vars x))))
 
 (defun simple-error (s)
-  (error s))
+  (throw s))
 
-; (defun trap-error (e f))
+(defun error-to-string (e)
+  (funcall (match-lambda
+             (((tuple 'throw message _)) message)
+             ((_) (error "not an exception")))
+           e))
 
 (defun cons?
   ((()) 'false)

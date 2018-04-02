@@ -2,7 +2,7 @@
 (set *lfe-directory* "lfe-sources/")
 
 (set *kl-natives* [and cons hd if or tl])
-(set *kl-primitives* [cons? eval-kl set simple-error value])
+(set *kl-primitives* [cons? error-to-string eval-kl set simple-error value])
 
 (define native? X -> (element? X (value *kl-natives*)))
 (define primitive? X -> (element? X (value *kl-primitives*)))
@@ -74,6 +74,7 @@
   [lambda P B] -> [(intern "macros:lambda") P (make-lfe-code B)]
   [freeze P B] -> [(intern "macros:freeze") P (make-lfe-code B)]
   [let X Y B] -> [(intern "macros:let") X (make-lfe-code Y) (make-lfe-code B)]
+  [trap-error X F] -> [(intern "macros:trap-error") (make-lfe-code X) (make-lfe-code F)]
   [F | R] -> [(intern "macros:funcall") F | (map-make-lfe-code R)]
   Code -> Code)
 
@@ -82,9 +83,10 @@
   P [lambda X Y] -> [lambda X (quote-free-symbols (union [X] P) Y)]
   P [let X Y Z] -> [let X (quote-free-symbols P Y)
                         (quote-free-symbols (union [X] P) Z)]
+  P [trap-error X F] -> [trap-error (quote-free-symbols P X) (quote-free-symbols P F)]
   P [X | Y] -> [X | (map-quote-free-symbols P Y)] where (symbol? X)
   P X -> (map-quote-free-symbols P X) where (cons? X)
-  P X -> (intern (cn "'" (str X))) where (and (symbol? X) (not (element? X P)))
+  P X -> (intern (@s "'|" (str X) "|")) where (and (symbol? X) (not (element? X P)))
   P X -> X)
 
 (define map-quote-free-symbols
