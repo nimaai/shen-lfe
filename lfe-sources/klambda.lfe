@@ -4,7 +4,8 @@
           (intern 1)
           (set 2)
           (simple-error 1)
-          (value 1))
+          (value 1)
+          (write-byte 2))
   (natives and
            cond
            cons
@@ -37,6 +38,10 @@
 
 (defun intern (s)
   (list_to_atom s))
+
+(defun write-byte (b s)
+  (io:fwrite s (binary b) [])
+  b)
 
 ; (defun debug-macro ()
 ;   (: lfe_io format '"~p~n" (list (kl-defun square (x) (* x x)))))
