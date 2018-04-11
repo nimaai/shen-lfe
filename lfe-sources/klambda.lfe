@@ -1,6 +1,17 @@
 (defmodule klambda
-  (export (cons? 1) (error-to-string 1) (simple-error 1) (set 2) (value 1))
-  (natives if and or cond cons hd tl))
+  (export (cons? 1)
+          (error-to-string 1)
+          (intern 1)
+          (set 2)
+          (simple-error 1)
+          (value 1))
+  (natives and
+           cond
+           cons
+           hd
+           if
+           or
+           tl))
 
 (defun natives ()
   (element 2 (lists:keyfind 'natives 1 (module_info 'attributes))))
@@ -23,6 +34,9 @@
 (defun cons?
   ((()) 'false)
   ((x) (is_list x)))
+
+(defun intern (s)
+  (list_to_atom s))
 
 ; (defun debug-macro ()
 ;   (: lfe_io format '"~p~n" (list (kl-defun square (x) (* x x)))))

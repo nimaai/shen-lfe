@@ -2,7 +2,7 @@
 (set *lfe-directory* "lfe-sources/")
 
 (set *kl-natives* [and cons hd if or tl])
-(set *kl-primitives* [cons? error-to-string eval-kl set simple-error value])
+(set *kl-primitives* [cons? error-to-string intern set simple-error value])
 
 (define native? X -> (element? X (value *kl-natives*)))
 (define primitive? X -> (element? X (value *kl-primitives*)))
